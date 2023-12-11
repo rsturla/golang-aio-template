@@ -3,12 +3,11 @@ ARG NODE_VERSION=20
 
 
 FROM node:${NODE_VERSION}-alpine AS node-builder
-ENV PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app
-COPY ui/package.json ui/yarn.lock ./
+COPY ui/package.json ui/yarn.lock ui/.yarnrc.yml ./
+COPY ui/.yarn ./.yarn
 RUN yarn install --immutable
 COPY ui/ .
-ENV NEXT_TELEMETRY_DISABLED=1
 RUN yarn export
 
 

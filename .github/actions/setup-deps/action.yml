@@ -1,0 +1,54 @@
+name: Setup Dependencies
+
+inputs:
+  setup-node:
+    description: Whether to setup Node.js and Yarn
+    required: false
+    default: true
+  setup-go:
+    description: Whether to setup Go
+    required: false
+    default: true
+  go-working-directory:
+    description: The working directory for Go
+    required: false
+    default: .
+  node-working-directory:
+    description: The working directory for Yarn
+    required: false
+    default: ./ui
+  node-version:
+    description: The version of Node.js to use
+    required: false
+    default: 20.x
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      if: ${{ inputs.setup-node }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: ${{ inputs.node-working-directory }}/yarn.lock
+
+    - name: Install Yarn Dependencies
+      if: ${{ inputs.setup-node }}
+      working-directory: ${{ inputs.node-working-directory }}
+      shell: bash
+      run: |
+        yarn install --immutable
+
+    - name: Setup Go
+      if: ${{ inputs.setup-go }}
+      uses: actions/setup-go@v4
+      with:
+        go-version-file: ${{ inputs.go-working-directory }}/go.mod
+
+    - name: Install Go Dependencies
+      if: ${{ inputs.setup-go }}
+      working-directory: ${{ inputs.go-working-directory }}
+      shell: bash
+      run: |
+        go get .

@@ -32,7 +32,7 @@ func main() {
 
 // handleAPI is the handler for the dummy API endpoint.
 func handleAPI(w http.ResponseWriter, _ *http.Request) {
-  log.Println("API Endpoint hit")
+	log.Println("API Endpoint hit")
 	if err := writeAllocsProfile(w); err != nil {
 		log.Printf("Error: Failed to write allocs profile: %v", err)
 	}

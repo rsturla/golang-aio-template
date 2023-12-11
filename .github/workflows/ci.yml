@@ -1,0 +1,41 @@
+name: GoLang AIO CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+
+      - name: Install Node Dependencies
+        run: yarn install --immutable
+        working-directory: ./ui
+
+      - name: Install Go Dependencies
+        run: go get .
+
+      - name: Lint Node
+        run: yarn lint
+        working-directory: ./ui
+
+      - name: Lint Go
+        run: go fmt ./... && go vet ./...
+
+      - name: Build Node
+        run: yarn export
+        working-directory: ./ui
+
+      - name: Build Go
+        run: go build -o ./bin/golang-aio-ci .

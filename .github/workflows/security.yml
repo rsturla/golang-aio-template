@@ -2,18 +2,53 @@ name: Security
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 1' # Run every Monday at 00:00 UTC
 
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
-      - name: 'Checkout Repository'
+      - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: 'Dependency Review'
+      - name: Dependency Review
         uses: actions/dependency-review-action@01bc87099ba56df1e897b6874784491ea6309bc4 # v3
         with:
           # Since this is a personal project, and not intended to be used in production
           # I am failing on high and critical errors.  Normally, this would be low or
           # moderate
           fail-on-severity: high
+
+
+  codeql-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'go', 'javascript-typescript' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"

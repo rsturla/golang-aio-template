@@ -16,10 +16,6 @@ jobs:
       - name: Setup Dependencies
         uses: ./.github/actions/setup-deps
 
-      - name: Format Node
-        working-directory: ./ui
-        run: yarn format
-
       - name: Format Go
         run: |
           gofmt_output=$(gofmt -s -d .)

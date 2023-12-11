@@ -1,0 +1,6 @@
+# GoLang binaries
+/bin/
+
+# Devbox files
+devbox.lock
+.devbox

@@ -26,7 +26,7 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js
-      if: ${{ inputs.setup-yarn }}
+      if: ${{ inputs.setup-node }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
@@ -34,8 +34,8 @@ runs:
         cache-dependency-path: ${{ inputs.node-working-directory }}/yarn.lock
 
     - name: Install Yarn Dependencies
-      if: ${{ inputs.setup-yarn }}
-      working-directory: ${{ inputs.yarn-working-directory }}
+      if: ${{ inputs.setup-node }}
+      working-directory: ${{ inputs.node-working-directory }}
       shell: bash
       run: |
         yarn install --immutable

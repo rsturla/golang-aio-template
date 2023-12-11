@@ -17,8 +17,8 @@ jobs:
         uses: ./.github/actions/setup-deps
 
       - name: Lint Node
-        run: yarn lint
         working-directory: ./ui
+        run: yarn lint
 
       - name: Lint Go
         run: go fmt ./... && go vet ./...
@@ -35,8 +35,8 @@ jobs:
         uses: ./.github/actions/setup-deps
 
       - name: Build Node
-        run: yarn export
         working-directory: ./ui
+        run: yarn export
 
       - name: Build Go
         run: go build -o ./bin/golang-aio-ci .

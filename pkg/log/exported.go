@@ -88,7 +88,7 @@ func Infof(format string, args ...any) {
 }
 
 // Printf logs a message at level Info on the standard logger.
-func Printf(format, args ...any) {
+func Printf(format string, args ...any) {
 	logger.Printf(format, args...)
 }
 

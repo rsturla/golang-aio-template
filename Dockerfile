@@ -13,7 +13,9 @@ RUN yarn export
 
 FROM golang:${GO_VERSION}-alpine AS go-builder
 WORKDIR /app
-COPY go.mod main.go ./
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
 COPY --from=node-builder /app/dist ./ui/dist
 RUN go build -o golang-aio .
 

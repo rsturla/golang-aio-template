@@ -4,15 +4,26 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
-	"log"
 	"net/http"
+	"os"
 	"runtime/pprof"
+
+	"github.com/rsturla/golang-aio/pkg/log"
+	"github.com/sirupsen/logrus"
 )
 
 //go:embed all:ui/dist
 var embedFS embed.FS
 
 func main() {
+	// Set logging format based on environment.
+	if os.Getenv("ENVIRONMENT") == "development" {
+		log.SetLogLevel(logrus.DebugLevel)
+		log.SetFormatter(&logrus.TextFormatter{})
+	} else {
+		log.SetLogLevel(logrus.InfoLevel)
+	}
+
 	// Extract the embedded filesystem for the frontend.
 	distFS, err := fs.Sub(embedFS, "ui/dist")
 	if err != nil {
@@ -32,7 +43,7 @@ func main() {
 
 // handleAPI is the handler for the dummy API endpoint.
 func handleAPI(w http.ResponseWriter, _ *http.Request) {
-	log.Println("API Endpoint hit")
+	log.Debug("API Endpoint hit")
 	if err := writeAllocsProfile(w); err != nil {
 		log.Printf("Error: Failed to write allocs profile: %v", err)
 	}

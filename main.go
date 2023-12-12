@@ -16,7 +16,7 @@ import (
 var embedFS embed.FS
 
 func main() {
-  // Set logging format based on environment.
+	// Set logging format based on environment.
 	if os.Getenv("ENVIRONMENT") == "development" {
 		log.SetLogLevel(logrus.DebugLevel)
 		log.SetFormatter(&logrus.TextFormatter{})

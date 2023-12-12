@@ -16,12 +16,11 @@ import (
 var embedFS embed.FS
 
 func main() {
-	// If running in production, set the log level to Info.  Else, set it to Debug.
-	if os.Getenv("ENVIRONMENT") == "production" {
-		log.SetLogLevel(logrus.InfoLevel)
-	} else {
+	if os.Getenv("ENVIRONMENT") == "development" {
 		log.SetLogLevel(logrus.DebugLevel)
 		log.SetFormatter(&logrus.TextFormatter{})
+	} else {
+		log.SetLogLevel(logrus.InfoLevel)
 	}
 
 	// Extract the embedded filesystem for the frontend.

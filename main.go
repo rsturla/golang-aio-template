@@ -21,6 +21,7 @@ func main() {
 		log.SetLogLevel(logrus.InfoLevel)
 	} else {
 		log.SetLogLevel(logrus.DebugLevel)
+		log.SetFormatter(&logrus.TextFormatter{})
 	}
 
 	// Extract the embedded filesystem for the frontend.

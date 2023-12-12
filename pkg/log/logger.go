@@ -17,6 +17,10 @@ func SetLogLevel(level logrus.Level) {
 	logger.Level = level
 }
 
+func SetFormatter(formatter logrus.Formatter) {
+	logger.Formatter = formatter
+}
+
 func Logger() *logrus.Logger {
 	return logger
 }

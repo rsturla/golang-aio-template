@@ -1,6 +1,6 @@
 cleanup:
-  rm -rf ./ui/dist
-  rm -rf ./ui/.next
+  rm -rf ./web/dist
+  rm -rf ./web/.next
   rm -rf ./bin
 
 build-binary:
@@ -8,8 +8,8 @@ build-binary:
   set -euxo pipefail
 
   just cleanup
-  echo "Building UI..."
-  pushd ui
+  echo "Building Web..."
+  pushd web
   yarn install
   yarn export
   popd

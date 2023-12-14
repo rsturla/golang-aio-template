@@ -1,18 +1,17 @@
-// internal/api/api.go
-package api
+package http
 
 import (
+	"github.com/rsturla/golang-aio/pkg/log"
 	"net/http"
 	"runtime/pprof"
-
-	"github.com/rsturla/golang-aio/pkg/log"
 )
 
 // HandleAPI is the handler for the dummy API endpoint.
-func HandleAPI(w http.ResponseWriter, _ *http.Request) {
-	log.Debug("API Endpoint hit")
-	if err := writeAllocsProfile(w); err != nil {
-		log.Printf("Error: Failed to write allocs profile: %v", err)
+func (s *Server) handleAPI() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if err := writeAllocsProfile(w); err != nil {
+			log.Printf("Error: Failed to write allocs profile: %v", err)
+		}
 	}
 }
 

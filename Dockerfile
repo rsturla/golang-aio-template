@@ -4,10 +4,10 @@ ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-alpine AS node-builder
 WORKDIR /app
-COPY ui/package.json ui/yarn.lock ui/.yarnrc.yml ./
-COPY ui/.yarn ./.yarn
+COPY web/package.json web/yarn.lock web/.yarnrc.yml ./
+COPY web/.yarn ./.yarn
 RUN yarn install --immutable
-COPY ui/ .
+COPY web/ .
 RUN yarn export
 
 
@@ -16,7 +16,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-COPY --from=node-builder /app/dist ./ui/dist
+COPY --from=node-builder /app/dist ./web/dist
 RUN go build -o golang-aio .
 
 

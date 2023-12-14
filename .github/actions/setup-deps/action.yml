@@ -16,7 +16,7 @@ inputs:
   node-working-directory:
     description: The working directory for Yarn
     required: false
-    default: ./ui
+    default: ./web
   node-version:
     description: The version of Node.js to use
     required: false

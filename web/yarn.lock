@@ -309,12 +309,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.11.7":
-  version: 20.11.7
-  resolution: "@types/node@npm:20.11.7"
+"@types/node@npm:20.11.9":
+  version: 20.11.9
+  resolution: "@types/node@npm:20.11.9"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: ba4b41542b64f21a881a277189e761c553d00af0b1c02f2d8a47ebe8bc29a00ed21b45adf0bf9af2cf8ea6c92a443853d4f7b690081ceaecc150719cc574e9ea
+  checksum: 72f32aa56e97863d0bfee0274ce450245c2e159104a15f0fb3ee389962dfec34de284a679323161f8cf6cdaae9141043e370571988215b94e653a40f9b60078a
   languageName: node
   linkType: hard
 
@@ -1806,7 +1806,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "golang-aio@workspace:."
   dependencies:
-    "@types/node": "npm:20.11.7"
+    "@types/node": "npm:20.11.9"
     "@types/react": "npm:18.2.48"
     "@types/react-dom": "npm:18.2.18"
     autoprefixer: "npm:10.4.17"

@@ -103,3 +103,22 @@ jobs:
           tags: golang-aio:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  fan-in:
+    runs-on: ubuntu-linux
+    needs: [build-binary, build-docker]
+    steps:
+      - name: Check Jobs
+        shell: bash
+        env:
+          JOBS: ${{ toJSON(needs) }}
+        run: |
+          echo "Job status:"
+          echo $JOBS | jq -r 'to_entries[] | " - \(.key): \(.value.result)"'
+          for i in $(echo $JOBS | jq -r 'to_entries[] | .value.result'); do
+            if [ "$i" != "success" ] && [ "$i" != "skipped" ]; then
+              echo ""
+              echo "Status check not okay!"
+              exit 1
+            fi
+          done

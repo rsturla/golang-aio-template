@@ -59,7 +59,7 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        os: [darwin, linux, windows]
+        os: [darwin, linux, windowsss]
         arch: [amd64, arm64]
     steps:
       - name: Checkout

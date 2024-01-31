@@ -108,6 +108,7 @@ jobs:
   fan-in:
     runs-on: ubuntu-linux
     needs: [build-binary, build-docker]
+    if: always()
     steps:
       - name: Check Jobs
         shell: bash

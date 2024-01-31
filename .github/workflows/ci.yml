@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [darwin, linux, windowss]
+        os: [darwin, linux, windows]
         arch: [amd64, arm64]
     steps:
       - name: Checkout

@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"github.com/rsturla/golang-aio/internal/http"
 	"github.com/rsturla/golang-aio/pkg/log"
 	"github.com/sirupsen/logrus"

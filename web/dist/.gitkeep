@@ -1,3 +1,0 @@
-// The presence of the ".gitkeep" file in the "/dist" directory ensures that the directory is not empty,
-// allowing successful embedding in the Go binary. This is the only file intended to be committed in the "/dist" folder.
-// Git is configured to ignore all other files within the "/dist" directory.

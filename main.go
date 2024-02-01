@@ -19,11 +19,8 @@ func main() {
 
 func run(args []string) error {
 	// Set logging format based on environment.
-	if os.Getenv("ENVIRONMENT") == "development" {
-		log.SetLogLevel(log.DebugLevel)
-		log.SetFormatter(log.TextFormatter)
-	} else {
-		log.SetLogLevel(log.InfoLevel)
+	if err := setupLogger(); err != nil {
+		return err
 	}
 
 	// Register the API endpoints.
@@ -34,4 +31,14 @@ func run(args []string) error {
 	addr := ":8080"
 	log.Printf("Starting HTTP server on port %s ...\n", addr)
 	return s.ListenAndServe(addr)
+}
+
+func setupLogger() error {
+	switch os.Getenv("ENVIRONMENT") {
+	case "development":
+		log.SetFormatter(log.TextFormatter)
+		return log.SetLogLevel("debug")
+	default:
+		return log.SetLogLevel("info")
+	}
 }

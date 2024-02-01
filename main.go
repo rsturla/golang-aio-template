@@ -35,5 +35,5 @@ func run(args []string) error {
 	// Start the HTTP server.
 	addr := ":8080"
 	log.Printf("Starting HTTP server on port %s ...\n", addr)
-	log.Fatal(s.ListenAndServe(addr))
+	return s.ListenAndServe(addr)
 }

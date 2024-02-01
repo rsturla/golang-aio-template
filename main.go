@@ -2,6 +2,8 @@ package main
 
 import (
 	"embed"
+	"fmt"
+	"github.com/rsturla/golang-aio/internal/config"
 	"github.com/rsturla/golang-aio/internal/http"
 	"github.com/rsturla/golang-aio/pkg/log"
 	"os"
@@ -12,7 +14,7 @@ var embedFS embed.FS
 
 func main() {
 	if err := run(os.Args); err != nil {
-		log.Errorf("Run failed with error: %s\n", err)
+		log.Errorf("Run failed with error: %s", err)
 		os.Exit(1)
 	}
 }
@@ -23,13 +25,19 @@ func run(args []string) error {
 		return err
 	}
 
+	// Setup configuration.
+	cfg, err := setupConfig(os.Getenv("CONFIG_FILE"))
+	if err != nil {
+		return err
+	}
+
 	// Register the API endpoints.
-	s := http.NewServer(embedFS)
+	s := http.NewServer(embedFS, cfg)
 	s.Routes()
 
 	// Start the HTTP server.
-	addr := ":8080"
-	log.Printf("Starting HTTP server on port %s ...\n", addr)
+	addr := fmt.Sprintf(":%d", cfg.Port)
+	log.Printf("Starting HTTP server on port %s", addr)
 	return s.ListenAndServe(addr)
 }
 
@@ -41,4 +49,19 @@ func setupLogger() error {
 	default:
 		return log.SetLogLevel("info")
 	}
+}
+
+func setupConfig(filePath string) (*config.Config, error) {
+	cfg := config.New()
+
+	if filePath == "" {
+		log.Info("No configuration file specified, using defaults")
+		return cfg, nil
+	}
+
+	if err := cfg.Load(filePath); err != nil {
+		return nil, err
+	}
+
+	return cfg, nil
 }

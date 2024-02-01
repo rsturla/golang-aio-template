@@ -2,18 +2,21 @@ package http
 
 import (
 	"embed"
+	"github.com/rsturla/golang-aio/internal/config"
 	"net/http"
 )
 
 type Server struct {
 	Router        *http.ServeMux
 	WebFilesystem embed.FS
+	Config        *config.Config
 }
 
-func NewServer(filesystem embed.FS) *Server {
+func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
 	return &Server{
 		Router:        http.NewServeMux(),
 		WebFilesystem: filesystem,
+		Config:        cfg,
 	}
 }
 

@@ -13,6 +13,13 @@ import (
 var embedFS embed.FS
 
 func main() {
+	if err := run(os.Args); err != nil {
+		log.Errorf("Run failed with error: %s\n", err)
+		os.Exit(exitFail)
+	}
+}
+
+func run(args []string) error {
 	// Set logging format based on environment.
 	if os.Getenv("ENVIRONMENT") == "development" {
 		log.SetLogLevel(logrus.DebugLevel)
@@ -27,7 +34,6 @@ func main() {
 
 	// Start the HTTP server.
 	addr := ":8080"
-	serverURL := fmt.Sprintf("http://localhost%s", addr)
-	log.Printf("Starting HTTP server at %s ...", serverURL)
+	log.Printf("Starting HTTP server on port %s ...\n", addr)
 	log.Fatal(s.ListenAndServe(addr))
 }

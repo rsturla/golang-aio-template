@@ -4,7 +4,6 @@ import (
 	"embed"
 	"github.com/rsturla/golang-aio/internal/http"
 	"github.com/rsturla/golang-aio/pkg/log"
-	"github.com/sirupsen/logrus"
 	"os"
 )
 
@@ -21,10 +20,10 @@ func main() {
 func run(args []string) error {
 	// Set logging format based on environment.
 	if os.Getenv("ENVIRONMENT") == "development" {
-		log.SetLogLevel(logrus.DebugLevel)
-		log.SetFormatter(&logrus.TextFormatter{})
+		log.SetLogLevel(log.DebugLevel)
+		log.SetFormatter(log.TextFormatter)
 	} else {
-		log.SetLogLevel(logrus.InfoLevel)
+		log.SetLogLevel(log.InfoLevel)
 	}
 
 	// Register the API endpoints.

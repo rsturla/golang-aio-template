@@ -10,17 +10,39 @@ var (
 	logLevelLock = sync.Mutex{}
 )
 
+type LogLevel int
+type FormatterType int
+
+const (
+	DebugLevel LogLevel = iota
+	InfoLevel
+	WarnLevel
+	ErrorLevel
+	FatalLevel
+	PanicLevel
+)
+
+const (
+	JSONFormatter FormatterType = iota
+	TextFormatter
+)
+
 // SetLogLevel sets the log level of the logger.
-func SetLogLevel(level logrus.Level) {
+func SetLogLevel(level LogLevel) {
 	logLevelLock.Lock()
 	defer logLevelLock.Unlock()
 
-	logger.SetLevel(level)
+	logger.SetLevel(logrus.Level(level))
 }
 
 // SetFormatter sets the log formatter of the logger.
-func SetFormatter(formatter logrus.Formatter) {
-	logger.SetFormatter(formatter)
+func SetFormatter(formatter FormatterType) {
+	switch formatter {
+	case JSONFormatter:
+		logger.SetFormatter(&logrus.JSONFormatter{})
+	case TextFormatter:
+		logger.SetFormatter(&logrus.TextFormatter{})
+	}
 }
 
 // Logger returns the current logger instance.

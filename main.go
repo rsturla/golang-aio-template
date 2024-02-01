@@ -15,7 +15,7 @@ var embedFS embed.FS
 func main() {
 	if err := run(os.Args); err != nil {
 		log.Errorf("Run failed with error: %s\n", err)
-		os.Exit(exitFail)
+		os.Exit(1)
 	}
 }
 

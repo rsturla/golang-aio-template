@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"github.com/rsturla/golang-aio/internal/http"
 	"github.com/rsturla/golang-aio/pkg/log"
 	"github.com/sirupsen/logrus"
@@ -13,6 +12,13 @@ import (
 var embedFS embed.FS
 
 func main() {
+	if err := run(os.Args); err != nil {
+		log.Errorf("Run failed with error: %s\n", err)
+		os.Exit(1)
+	}
+}
+
+func run(args []string) error {
 	// Set logging format based on environment.
 	if os.Getenv("ENVIRONMENT") == "development" {
 		log.SetLogLevel(logrus.DebugLevel)
@@ -27,7 +33,6 @@ func main() {
 
 	// Start the HTTP server.
 	addr := ":8080"
-	serverURL := fmt.Sprintf("http://localhost%s", addr)
-	log.Printf("Starting HTTP server at %s ...", serverURL)
-	log.Fatal(s.ListenAndServe(addr))
+	log.Printf("Starting HTTP server on port %s ...\n", addr)
+	return s.ListenAndServe(addr)
 }

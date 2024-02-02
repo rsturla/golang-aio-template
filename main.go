@@ -18,7 +18,7 @@ var embedFS embed.FS
 
 func main() {
 	if err := run(os.Args); err != nil {
-		log.Errorf("Run failed with error: %s", err)
+		log.Fatalf("Run failed with error: %s", err)
 		os.Exit(1)
 	}
 }
@@ -42,7 +42,7 @@ func run(args []string) error {
 
 	// Start the HTTP server.
 	addr := fmt.Sprintf(":%d", cfg.Port)
-	log.Printf("Starting HTTP server on port %s", addr)
+	log.Infof("Starting HTTP server on port %s", addr)
 	return s.ListenAndServe(addr)
 }
 
@@ -58,10 +58,8 @@ func setupLogger() error {
 
 func setupConfig(configFilePath, configEnvPrefix string) (*config.Config, error) {
 	cfg := config.New()
-
 	if err := cfg.Load(configFilePath, configEnvPrefix); err != nil {
 		return nil, err
 	}
-
 	return cfg, nil
 }

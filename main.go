@@ -9,6 +9,10 @@ import (
 	"os"
 )
 
+var (
+	configEnvPrefix = "GOLANG_AIO_"
+)
+
 //go:embed all:web/dist
 var embedFS embed.FS
 
@@ -26,7 +30,8 @@ func run(args []string) error {
 	}
 
 	// Setup configuration.
-	cfg, err := setupConfig(os.Getenv("CONFIG_FILE"))
+	configFileEnvName := fmt.Sprintf("%sCONFIG_FILE", configEnvPrefix)
+	cfg, err := setupConfig(os.Getenv(configFileEnvName), configEnvPrefix)
 	if err != nil {
 		return err
 	}
@@ -51,15 +56,10 @@ func setupLogger() error {
 	}
 }
 
-func setupConfig(filePath string) (*config.Config, error) {
+func setupConfig(configFilePath, configEnvPrefix string) (*config.Config, error) {
 	cfg := config.New()
 
-	if filePath == "" {
-		log.Info("No configuration file specified, using defaults")
-		return cfg, nil
-	}
-
-	if err := cfg.Load(filePath); err != nil {
+	if err := cfg.Load(configFilePath, configEnvPrefix); err != nil {
 		return nil, err
 	}
 

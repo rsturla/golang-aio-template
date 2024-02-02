@@ -1,8 +1,10 @@
 package log
 
 import (
-	"github.com/sirupsen/logrus"
 	"testing"
+
+	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSetLogLevel(t *testing.T) {
@@ -21,13 +23,8 @@ func TestSetLogLevel(t *testing.T) {
 			logger = logrus.New()
 			err := SetLogLevel(tt.level)
 
-			if (err != nil) != tt.err {
-				t.Errorf("SetLogLevel() error = %v, wantErr %v", err, tt.err)
-			}
-
-			if logger.GetLevel() != tt.want {
-				t.Errorf("SetLogLevel() got = %v, want %v", logger.GetLevel(), tt.want)
-			}
+			assert.Equal(t, tt.err, err != nil, "SetLogLevel() error mismatch")
+			assert.Equal(t, tt.want, logger.GetLevel(), "SetLogLevel() log level mismatch")
 		})
 	}
 }
@@ -50,14 +47,12 @@ func TestSetFormatter(t *testing.T) {
 			switch tt.formatter {
 			case JSONFormatter:
 				formatter, ok := logger.Formatter.(*logrus.JSONFormatter)
-				if !ok || formatter == nil {
-					t.Error("SetFormatter() failed to set JSON formatter")
-				}
+				assert.True(t, ok, "SetFormatter() failed to set JSON formatter")
+				assert.NotNil(t, formatter, "SetFormatter() failed to set JSON formatter")
 			case TextFormatter:
 				formatter, ok := logger.Formatter.(*logrus.TextFormatter)
-				if !ok || formatter == nil {
-					t.Error("SetFormatter() failed to set Text formatter")
-				}
+				assert.True(t, ok, "SetFormatter() failed to set Text formatter")
+				assert.NotNil(t, formatter, "SetFormatter() failed to set Text formatter")
 			}
 		})
 	}
@@ -67,16 +62,12 @@ func TestLogger(t *testing.T) {
 	logger = logrus.New()
 	result := Logger()
 
-	if result != logger {
-		t.Error("Logger() returned incorrect logger instance")
-	}
+	assert.Equal(t, logger, result, "Logger() returned incorrect logger instance")
 }
 
 func TestSetLogger(t *testing.T) {
 	customLogger := logrus.New()
 	SetLogger(customLogger)
 
-	if logger != customLogger {
-		t.Error("SetLogger() failed to set custom logger instance")
-	}
+	assert.Equal(t, customLogger, logger, "SetLogger() failed to set custom logger instance")
 }

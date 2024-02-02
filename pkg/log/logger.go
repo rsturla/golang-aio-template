@@ -24,6 +24,7 @@ func SetLogLevel(level string) error {
 
 	parsedLevel, err := logrus.ParseLevel(level)
 	if err != nil {
+		logger.SetLevel(logrus.DebugLevel)
 		Errorf("Invalid log level %s\n", level)
 		return err
 	}

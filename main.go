@@ -2,9 +2,15 @@ package main
 
 import (
 	"embed"
+	"fmt"
+	"github.com/rsturla/golang-aio/internal/config"
 	"github.com/rsturla/golang-aio/internal/http"
 	"github.com/rsturla/golang-aio/pkg/log"
 	"os"
+)
+
+var (
+	configEnvPrefix = "GOLANG_AIO_"
 )
 
 //go:embed all:web/dist
@@ -12,7 +18,7 @@ var embedFS embed.FS
 
 func main() {
 	if err := run(os.Args); err != nil {
-		log.Errorf("Run failed with error: %s\n", err)
+		log.Fatalf("Run failed with error: %s", err)
 		os.Exit(1)
 	}
 }
@@ -23,13 +29,20 @@ func run(args []string) error {
 		return err
 	}
 
+	// Setup configuration.
+	configFileEnvName := fmt.Sprintf("%sCONFIG_FILE", configEnvPrefix)
+	cfg, err := setupConfig(os.Getenv(configFileEnvName), configEnvPrefix)
+	if err != nil {
+		return err
+	}
+
 	// Register the API endpoints.
-	s := http.NewServer(embedFS)
+	s := http.NewServer(embedFS, cfg)
 	s.Routes()
 
 	// Start the HTTP server.
-	addr := ":8080"
-	log.Printf("Starting HTTP server on port %s ...\n", addr)
+	addr := fmt.Sprintf(":%d", cfg.Port)
+	log.Infof("Starting HTTP server on port %s", addr)
 	return s.ListenAndServe(addr)
 }
 
@@ -41,4 +54,12 @@ func setupLogger() error {
 	default:
 		return log.SetLogLevel("info")
 	}
+}
+
+func setupConfig(configFilePath, configEnvPrefix string) (*config.Config, error) {
+	cfg := config.New()
+	if err := cfg.Load(configFilePath, configEnvPrefix); err != nil {
+		return nil, err
+	}
+	return cfg, nil
 }

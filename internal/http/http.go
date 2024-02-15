@@ -20,7 +20,7 @@ func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
 	}
 
 	s.setRoutes()
-	return &server
+	return server
 }
 
 func (s *Server) setRoutes() {

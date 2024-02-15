@@ -10,7 +10,7 @@ import (
 func (s *Server) handleAPI() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := writeAllocsProfile(w); err != nil {
-			log.Printf("Error: Failed to write allocs profile: %v", err)
+			log.Errorf("Failed to write allocs profile: %v", err)
 		}
 	}
 }

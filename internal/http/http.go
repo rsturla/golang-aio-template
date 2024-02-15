@@ -13,14 +13,17 @@ type Server struct {
 }
 
 func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
-	return &Server{
+	server := Server{
 		Router:        http.NewServeMux(),
 		WebFilesystem: filesystem,
 		Config:        cfg,
 	}
+
+	s.setRoutes()
+	return &server
 }
 
-func (s *Server) Routes() {
+func (s *Server) setRoutes() {
 	s.Router.HandleFunc("/", s.handleWeb(s.WebFilesystem))
 	s.Router.HandleFunc("/api", s.handleAPI())
 }

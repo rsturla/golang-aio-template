@@ -38,7 +38,6 @@ func run(args []string) error {
 
 	// Register the API endpoints.
 	s := http.NewServer(embedFS, cfg)
-	s.Routes()
 
 	// Start the HTTP server.
 	addr := fmt.Sprintf(":%d", cfg.Port)

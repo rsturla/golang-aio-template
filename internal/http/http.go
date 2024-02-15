@@ -13,14 +13,14 @@ type Server struct {
 }
 
 func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
-	server := &Server{
+	s := &Server{
 		Router:        http.NewServeMux(),
 		WebFilesystem: filesystem,
 		Config:        cfg,
 	}
 
 	s.setRoutes()
-	return server
+	return s
 }
 
 func (s *Server) setRoutes() {

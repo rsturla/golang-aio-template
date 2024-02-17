@@ -9,6 +9,8 @@ import (
 
 func SetupConfig(configFilePath, configEnvPrefix string) (*config.Config, error) {
 	cfg := config.New()
+	log.Debugf("Loading config from file: %s", configFilePath)
+
 	if err := cfg.Load(configFilePath, configEnvPrefix); err != nil {
 		return nil, err
 	}
@@ -17,7 +19,7 @@ func SetupConfig(configFilePath, configEnvPrefix string) (*config.Config, error)
 
 func SetupLogger() error {
 	environment := os.Getenv("ENVIRONMENT")
-	log.Infof("Setting up logger for environment: %s", environment)
+	log.Debugf("Setting up logger for environment: %s", environment)
 
 	switch environment {
 	case "development":

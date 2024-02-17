@@ -2,9 +2,10 @@ package http
 
 import (
 	"embed"
-	"github.com/rsturla/golang-aio/pkg/log"
 	"io/fs"
 	"net/http"
+
+	"github.com/rsturla/golang-aio/pkg/log"
 )
 
 func (s *Server) handleWeb(filesystem embed.FS) http.HandlerFunc {

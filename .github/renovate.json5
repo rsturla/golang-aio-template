@@ -14,6 +14,10 @@
       "matchManagers": [
         "github-actions"
       ]
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true
     }
   ]
 }

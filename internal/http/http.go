@@ -2,8 +2,11 @@ package http
 
 import (
 	"embed"
-	"github.com/rsturla/golang-aio/internal/config"
+	"fmt"
 	"net/http"
+
+	"github.com/rsturla/golang-aio/internal/config"
+	"github.com/rsturla/golang-aio/pkg/log"
 )
 
 type Server struct {
@@ -12,7 +15,14 @@ type Server struct {
 	Config        *config.Config
 }
 
-func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
+func Serve(filesystem embed.FS, cfg *config.Config) error {
+	s := newServer(filesystem, cfg)
+	addr := fmt.Sprintf(":%d", cfg.Port)
+	log.Infof("Listening on %s", addr)
+	return s.listenAndServe(addr)
+}
+
+func newServer(filesystem embed.FS, cfg *config.Config) *Server {
 	s := &Server{
 		Router:        http.NewServeMux(),
 		WebFilesystem: filesystem,
@@ -23,11 +33,6 @@ func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
 	return s
 }
 
-func (s *Server) setRoutes() {
-	s.Router.HandleFunc("/", s.handleWeb(s.WebFilesystem))
-	s.Router.HandleFunc("/api", s.handleAPI())
-}
-
-func (s *Server) ListenAndServe(addr string) error {
+func (s *Server) listenAndServe(addr string) error {
 	return http.ListenAndServe(addr, s.Router)
 }

@@ -1,12 +1,7 @@
-import type { Metadata } from "next";
+"use client";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import "@/styles/globals.css";
-
-export const metadata: Metadata = {
-  title: "GoLang AIO App",
-  description:
-    "A sample app to demonstrate bundling a Next.js app inside a GoLang binary.",
-};
 
 export default function RootLayout({
   children,

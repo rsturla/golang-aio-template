@@ -124,7 +124,7 @@ jobs:
 
   fan-in:
     runs-on: ubuntu-latest
-    needs: [build-binary, build-docker]
+    needs: [format, lint, test, build-binary, build-docker]
     if: always()
     steps:
       - name: Check Jobs

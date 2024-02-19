@@ -20,7 +20,7 @@ export function MainNav({ items, children }: MainNavProps) {
     <div className="flex h-16 items-center w-full">
       {/* LEFT */}
       <div className="flex w-6/12 space-x-8">
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" passHref className="flex space-x-3">
           <Icons.logo />
           <span className="font-bold">{siteConfig.name}</span>
         </Link>
@@ -49,7 +49,7 @@ export function MainNav({ items, children }: MainNavProps) {
       <div className="md:hidden w-6/12 flex items-center justify-end">
         <button
           className="flex items-center space-x-2"
-          onClick={() => setShowMobileMenu(!showMobileMenu)}
+          onClick={() => setShowMobileMenu((prev) => !prev)}
         >
           {showMobileMenu ? <Icons.close /> : <Icons.hamburger />}
         </button>

@@ -1,6 +1,4 @@
-import { Command, X, Menu, type Icon as LucideIcon } from "lucide-react";
-
-export type Icon = LucideIcon;
+import { Command, X, Menu } from "lucide-react";
 
 export const Icons = {
   logo: Command,

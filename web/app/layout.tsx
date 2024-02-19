@@ -5,7 +5,6 @@ import "@/styles/globals.css";
 import { MainNav } from "@/components/main-nav";
 import { mainNavConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 export default function RootLayout({
   children,
@@ -21,12 +20,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <header className="container z-40 bg-background">
-            <div className="flex h-20 items-center justify-between py-6">
+          <header className="container z-40">
+            <div className="h-20">
               <MainNav items={mainNavConfig} />
             </div>
           </header>
-          {children}
+          <main className="container py-2">{children}</main>
         </ThemeProvider>
       </body>
     </html>

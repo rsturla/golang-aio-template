@@ -8,7 +8,7 @@ import (
 	"github.com/rsturla/golang-aio/pkg/log"
 )
 
-func (s *Server) handleWeb(filesystem embed.FS) http.HandlerFunc {
+func (s *Server) handleWeb(filesystem *embed.FS) http.HandlerFunc {
 	// Extract the embedded filesystem for the frontend.
 	distFS, err := fs.Sub(filesystem, "web/dist")
 	if err != nil {

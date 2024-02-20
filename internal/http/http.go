@@ -12,11 +12,11 @@ import (
 type Server struct {
 	HttpServer    *http.Server
 	Router        *http.ServeMux
-	WebFilesystem embed.FS
+	WebFilesystem *embed.FS
 	Config        *config.Config
 }
 
-func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
+func NewServer(filesystem *embed.FS, cfg *config.Config) *Server {
 	s := &Server{
 		WebFilesystem: filesystem,
 		Config:        cfg,

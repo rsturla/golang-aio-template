@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/rsturla/golang-aio/internal/config"
-	"github.com/rsturla/golang-aio/pkg/log"
 )
 
 type Server struct {
@@ -15,14 +14,6 @@ type Server struct {
 	Router        *http.ServeMux
 	WebFilesystem embed.FS
 	Config        *config.Config
-}
-
-func Serve(filesystem embed.FS, cfg *config.Config) error {
-	s := NewServer(filesystem, cfg)
-	addr := fmt.Sprintf(":%d", cfg.Port)
-	log.Infof("Listening on %s", addr)
-
-	return s.HttpServer.ListenAndServe()
 }
 
 func NewServer(filesystem embed.FS, cfg *config.Config) *Server {

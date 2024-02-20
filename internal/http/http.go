@@ -4,35 +4,42 @@ import (
 	"embed"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/rsturla/golang-aio/internal/config"
 	"github.com/rsturla/golang-aio/pkg/log"
 )
 
 type Server struct {
+	HttpServer    *http.Server
 	Router        *http.ServeMux
 	WebFilesystem embed.FS
 	Config        *config.Config
 }
 
 func Serve(filesystem embed.FS, cfg *config.Config) error {
-	s := newServer(filesystem, cfg)
+	s := NewServer(filesystem, cfg)
 	addr := fmt.Sprintf(":%d", cfg.Port)
 	log.Infof("Listening on %s", addr)
-	return s.listenAndServe(addr)
+
+	return s.HttpServer.ListenAndServe()
 }
 
-func newServer(filesystem embed.FS, cfg *config.Config) *Server {
+func NewServer(filesystem embed.FS, cfg *config.Config) *Server {
 	s := &Server{
-		Router:        http.NewServeMux(),
 		WebFilesystem: filesystem,
 		Config:        cfg,
+		Router:        http.NewServeMux(),
+	}
+
+	s.HttpServer = &http.Server{
+		Addr:         fmt.Sprintf(":%d", cfg.Port),
+		ReadTimeout:  time.Second * 3,
+		WriteTimeout: time.Second * 3,
+		IdleTimeout:  time.Second * 60,
+		Handler:      s.Router,
 	}
 
 	s.setRoutes()
 	return s
-}
-
-func (s *Server) listenAndServe(addr string) error {
-	return http.ListenAndServe(addr, s.Router)
 }

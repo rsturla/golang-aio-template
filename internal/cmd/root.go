@@ -11,6 +11,7 @@ var rootCmd = &cobra.Command{
 	Long: `golang-aio is an all-in-one GoLang application that serves as a template for building
 	modern full-stack applications using GoLang and NextJS.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return http.Serve(embedFS, cfg)
+		server := http.NewServer(embedFS, cfg)
+		return server.HttpServer.ListenAndServe()
 	},
 }

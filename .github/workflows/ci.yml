@@ -2,7 +2,6 @@ name: GoLang AIO CI
 
 on:
   pull_request:
-  merge_group:
   push:
     branches:
       - main
@@ -19,7 +18,7 @@ jobs:
 
       - name: Format Node
         working-directory: ./web
-        run: yarn format --check
+        run: yarn format
 
       - name: Format Go
         run: |

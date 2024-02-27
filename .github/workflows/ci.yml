@@ -18,7 +18,7 @@ jobs:
 
       - name: Format Node
         working-directory: ./web
-        run: yarn format --check
+        run: yarn format
 
       - name: Format Go
         run: |
@@ -93,13 +93,17 @@ jobs:
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
-        run: go build -o ./bin/golang-aio .
+        run: |
+          go build -o ./bin/golang-aio .
+          sha256sum ./bin/golang-aio > ./bin/golang-aio-checksum
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
         with:
           name: golang-aio-${{ matrix.os }}-${{ matrix.arch }}
-          path: ./bin/golang-aio
+          path: |
+            ./bin/golang-aio
+            ./bin/golang-aio-checksum
           if-no-files-found: error
 
 

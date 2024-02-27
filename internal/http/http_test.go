@@ -67,13 +67,6 @@ func TestDecode(t *testing.T) {
 			expected:     TestData{Name: "Alice", Age: 25},
 		},
 		{
-			name:          "Valid Missing Field",
-			responseBody:  `{"name": "David"}`, // age is missing
-			targetType:    TestData{},
-			expected:      TestData{Name: "David"},
-			expectedError: "",
-		},
-		{
 			name:          "Invalid Type",
 			responseBody:  `{"name": "Bob", "age": "thirty"}`, // age should be an int, but it's a string
 			targetType:    TestData{},

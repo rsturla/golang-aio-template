@@ -14,7 +14,9 @@ async function fetcher(url: string): Promise<string> {
 }
 
 export default function Home() {
-  const { data, error } = useSWR("/api/count", fetcher, { refreshInterval: 1000 });
+  const { data, error } = useSWR("/api/count", fetcher, {
+    refreshInterval: 1000,
+  });
 
   if (error) {
     return <div>Error: {error.message}</div>;

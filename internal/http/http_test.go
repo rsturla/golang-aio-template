@@ -1,6 +1,7 @@
 package http
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/assert"
@@ -55,34 +56,34 @@ func TestEncode(t *testing.T) {
 func TestDecode(t *testing.T) {
 	tests := []struct {
 		name          string
-		responseBody  interface{}
+		requestBody   interface{}
 		targetType    interface{}
 		expected      interface{}
 		expectedError string
 	}{
 		{
-			name:         "Valid JSON",
-			responseBody: TestData{Name: "Alice", Age: 25},
-			targetType:   TestData{},
-			expected:     TestData{Name: "Alice", Age: 25},
+			name:        "Valid JSON",
+			requestBody: TestData{Name: "Alice", Age: 25},
+			targetType:  TestData{},
+			expected:    TestData{Name: "Alice", Age: 25},
 		},
 		{
 			name:          "Invalid Type",
-			responseBody:  `{"name": "Bob", "age": "thirty"}`, // age should be an int, but it's a string
+			requestBody:   `{"name": "Bob", "age": "thirty"}`, // age should be an int, but it's a string
 			targetType:    TestData{},
 			expected:      TestData{},
 			expectedError: "failed to decode data",
 		},
 		{
 			name:          "Invalid JSON",
-			responseBody:  `{"name": "Charlie", "age": 40`, // missing closing brace
+			requestBody:   `{"name": "Charlie", "age": 40`, // missing closing brace
 			targetType:    TestData{},
 			expected:      TestData{},
 			expectedError: "failed to decode data",
 		},
 		{
 			name:          "Empty JSON",
-			responseBody:  `{}`,
+			requestBody:   `{}`,
 			targetType:    TestData{},
 			expected:      TestData{},
 			expectedError: "failed to decode data",
@@ -91,17 +92,16 @@ func TestDecode(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Marshal the response body into JSON
-			responseBody, err := json.Marshal(tt.responseBody)
+			// Marshal the request body into JSON
+			requestBody, err := json.Marshal(tt.requestBody)
 			assert.NoError(t, err)
 
-			// Create a mock HTTP response with the JSON body
-			resp := httptest.NewRecorder()
-			_, err = resp.Write(responseBody)
+			// Create a mock HTTP request with the JSON body
+			req, err := http.NewRequest("POST", "/endpoint", bytes.NewBuffer(requestBody))
 			assert.NoError(t, err)
 
 			// Call the decode function with the appropriate type
-			decoded, err := decode[TestData](resp.Result())
+			decoded, err := decode[TestData](req)
 
 			// Check the output and error against expectations
 			if tt.expectedError != "" {

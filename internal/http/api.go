@@ -5,18 +5,22 @@ import (
 	"net/http"
 )
 
-// HandleAPI is the handler for the dummy API endpoint.
+// handleCountAPI is the handler for the dummy API endpoint.
 func (s *Server) handleCountAPI() http.HandlerFunc {
-	count := 0
 
+	// Define the request and response types for the endpoint
 	type response struct {
 		Count int `json:"count"`
 	}
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		count++
-		log.Infof("Count: %d", count)
+	// Prepare the handler
+	count := 0
 
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Increment the count
+		count++
+
+		// Prepare and send the response
 		response := response{Count: count}
 		if err := encode(w, http.StatusOK, response); err != nil {
 			log.Errorf("Error encoding response: %v", err)

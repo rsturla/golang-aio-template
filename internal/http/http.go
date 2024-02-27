@@ -47,7 +47,7 @@ func encode[T any](w http.ResponseWriter, status int, data T) error {
 	return nil
 }
 
-func decode[T any](r *http.Response) (T, error) {
+func decode[T any](r *http.Request) (T, error) {
 	var data T
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		return data, fmt.Errorf("failed to decode data: %v", err)

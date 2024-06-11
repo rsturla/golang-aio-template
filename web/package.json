@@ -1,7 +1,7 @@
 {
   "name": "golang-aio",
   "version": "0.1.0",
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "yarn@4.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

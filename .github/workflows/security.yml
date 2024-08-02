@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0
 
       - name: TruffleHog OSS
-        uses: trufflesecurity/trufflehog@ddb7211ded73d72b8fd414d96cecc28a9afe6a76 # v3.81.2
+        uses: trufflesecurity/trufflehog@c549b5bd150ed288182d91bc79fecc08bf520915 # v3.81.4
         with:
           path: ./
           base: ${{ github.event.repository.default_branch }}
